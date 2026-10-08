@@ -257,6 +257,13 @@ def parse_stroke(stroke_bytes: bytes, page: str) -> Stroke:
                 x1, y1, w1 = first
                 x2, y2, w2 = second
                 paths.append((x1, y1, x2, y2, max(0.2, (w1 + w2) / 2)))
+    elif signature == (
+        "vuA(v)A(S(uuuuu))A(S(uuuuuuuuuuu))A(S(uu))A(v)"
+        "A(S(uu))A(S(uuuu))A(u)"
+    ):
+        # Newer Goodnotes versions emit empty placeholder records with this
+        # signature; they contain no drawable point data.
+        pass
     else:
         raise ValueError(f"Unsupported Goodnotes pen geometry: {signature}")
 
